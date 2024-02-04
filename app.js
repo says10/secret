@@ -8,11 +8,8 @@ const mongoose=require("mongoose");
 const session=require("express-session");
 const passport=require("passport");
 const passportLocalMongoose=require("passport-local-mongoose");
-<<<<<<< HEAD
-=======
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var findOrCreate=require("mongoose-findorcreate");
->>>>>>> 0c9091f (my changes)
 
 
 console.log(process.env.API_KEY);
@@ -40,20 +37,13 @@ const userSchema = new mongoose.Schema({
 
 
     userSchema.plugin(passportLocalMongoose);
-<<<<<<< HEAD
-=======
     userSchema.plugin(findOrCreate);
->>>>>>> 0c9091f (my changes)
 
 
 
 const User=new mongoose.model("User",userSchema);
 
 passport.use(User.createStrategy());
-<<<<<<< HEAD
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-=======
 passport.serializeUser(function(user,done){
     done(null,user.id);
 });
@@ -78,7 +68,6 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
->>>>>>> 0c9091f (my changes)
 
 app.get("/",function(req,res){
     res.render("home");
@@ -93,39 +82,6 @@ app.get("/register",function(req,res){
     res.render("register");
 });
 app.get("/secrets",function(req,res){
-<<<<<<< HEAD
-    if(req.isAuthenticated()){
-        res.render("secrets");
-    }
-    else{
-        res.redirect("/login");
-    }
-});
-app.get("/logout", (req, res) => {
-    req.logout(req.user, err => {
-      if(err) return next(err);
-      res.redirect("/");
-    });
-  });
-
-app.post("/register",function(req,res){
-    
-        User.register({username:req.body.username},req.body.password,function(err,user){
-            if(err)
-            {
-                console.log(err);
-                res.redirect("/register");
-            }
-            else{
-                passport.authenticate("local")(req,res,function(){
-                    res.redirect("/secrets");
-                });
-            }
-        });
-    });
-    
-
-=======
     User.find({"secret": {$ne: null}})
     .then(function(foundUsers) {
         res.render("secrets", {userWithSecrets: foundUsers});
@@ -204,7 +160,6 @@ app.post("/register",function(req,res){
     });
     
 
->>>>>>> 0c9091f (my changes)
     app.post("/login",function(req,res){
         
         const user=new User({
